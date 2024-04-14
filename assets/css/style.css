@@ -318,6 +318,14 @@ main {
     display: inline-block;
 }
 
+.mlabel {
+    padding-bottom: 8px;
+}
+
+#addpost {
+    display: none;
+}
+
 footer {
     text-align: center;
 }

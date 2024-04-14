@@ -13,6 +13,8 @@
     <meta property="og:image:width" content="512" />
     <meta property="og:image:height" content="512" />
     <link rel="stylesheet" type="text/css" href="../assets/css/style.css">
+    <script src="../assets/js/firebase/index.js"></script>
+    <script src="../assets/js/firebase-auth/index.js"></script>
     <!-- Include link icon fontawesome -->
     <link rel="stylesheet" href="https://cusmedroid.github.io/fontawesome-4/css/font-awesome.min.css" />
   </head>
@@ -42,62 +44,136 @@
     <main class="animate-right">
       <div class="sp_header"></div>
       <section class="mcard mb20">
-        <h1 class="x-nowarp"><a href="">Pengguna</a></h1>
+        <h1 class="x-nowarp">Pengguna</h1>
         <span>Beranda > <b>Pengguna</b></span>
         <hr />
         <section class="mpf1">
           <img title="Image profile" src="../assets/icon/ic_launcher.png">
           <div class="mpf2">
-            <p class="x-nowarp">Halo, <b>Siapa?</b></p>
-            <p><span class="x-nowarp">examplae@email.com</span></p>
-            <a href="">
+            <p class="x-nowarp">Halo, <b id="mname">...</b></p>
+            <p><span class="x-nowarp" id="memail">...</span></p>
+            <a id="btnsett" title="Pengaturan">
               <i class="fa fa-cog" aria-hidden="true"></i>
             </a>
-            <a href="">
+            <a id="btnadd" title="Tambah Posting">
               <i class="fa fa-plus" aria-hidden="true"></i>
             </a>
-            <a href="">
+            <a id="logout" title="Keluar">
               <i class="fa fa-sign-out" aria-hidden="true"></i>
             </a>
           </div>
         </section>
       </section>
-      
-      <div class="row">
-        <div class="column3 mb20">
-          <section class="mcard">
-            <a href="">
-              <img alt="Image post" src="../assets/img/loading_900x560.jpg" />
-            </a>
-            <h1 class="x-nowarp"><a href="">Title</a></h1>
-            <span>01/01/1991</span>
-            <hr />
-            <p class="x-nowarp">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-          </section>
-        </div>
-        <div class="column3 mb20">
-          <section class="mcard">
-            <a href="">
-              <img alt="Image post" src="../assets/img/loading_900x560.jpg" />
-            </a>
-            <h1 class="x-nowarp"><a href="">Title</a></h1>
-            <span>01/01/1991</span>
-            <hr />
-            <p class="x-nowarp">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-          </section>
-        </div>
-        <div class="column3 mb20">
-          <section class="mcard">
-            <a href="">
-              <img alt="Image post" src="../assets/img/loading_900x560.jpg" />
-            </a>
-            <h1 class="x-nowarp"><a href="">Title</a></h1>
-            <span>01/01/1991</span>
-            <hr />
-            <p class="x-nowarp">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-          </section>
-        </div>
+
+      <div id="settings">
+        <section class="mcard mb20">
+          <h1 class="x-nowarp">Edit Tentang</h1>
+          <hr />
+          <div>
+            <p class="mlabel">Unggah Poto</p>
+            <div class="input-container">
+              <i class="fa fa-picture-o icon"></i>
+              <input class="input-field" type="file" name="files[]" id="files_bg" accept="image/*" required />
+            </div>
+            <input type="hidden" name="url_bg" id="url_bg" />
+            <button class="btn" type="submit" onclick="updBg()">Simpan</button><br/><br/>
+
+            <p class="mlabel">Nama Ketua</p>
+            <div class="input-container">
+              <i class="fa fa-user icon"></i>
+              <input class="input-field" type="text" id="abt_name" placeholder="Nama" name="name" required />
+            </div>
+
+            <p class="mlabel">Deskripsi</p>
+            <div class="input-container">
+              <i class="fa fa-file-text icon"></i>
+              <textarea class="input-field" rows="8" id="abt_desc" placeholder="Tulis sesuatu..." name="subject" required></textarea>
+            </div>
+
+            <p class="mlabel">Mulai Jabatan</p>
+            <div class="input-container">
+              <i class="fa fa-calendar icon"></i>
+              <input class="input-field" type="date" id="abt_ondate" name="ondate" required />
+            </div>
+
+            <p class="mlabel">Akhir Jabatan</p>
+            <div class="input-container">
+              <i class="fa fa-calendar-o icon"></i>
+              <input class="input-field" type="date" id="abt_enddate" name="enddate" required />
+            </div>
+
+            <button type="submit" onclick="mEdtAbout()" class="btn">Simpan</button>
+          </div>
+        </section>
+
+        <section class="mcard mb20">
+          <h1 class="x-nowarp">Edit Social</h1>
+          <hr />
+          <div>
+            <p class="mlabel">Facebook</p>
+            <div class="input-container">
+              <i class="fa fa-facebook icon"></i>
+              <input class="input-field" type="text" id="mfb" placeholder="Facebook" name="facebook" required />
+            </div>
+            <p class="mlabel">Instagram</p>
+            <div class="input-container">
+              <i class="fa fa-instagram icon"></i>
+              <input class="input-field" type="text" id="mig" placeholder="Instagram" name="instagram" required />
+            </div>
+            <p class="mlabel">YouTube</p>
+            <div class="input-container">
+              <i class="fa fa-youtube-square icon"></i>
+              <input class="input-field" type="text" id="myt" placeholder="YouTube" name="youtube" required />
+            </div>
+            <p class="mlabel">Twitter</p>
+            <div class="input-container">
+              <i class="fa fa-twitter-square icon"></i>
+              <input class="input-field" type="text" id="mtw" placeholder="Twitter" name="twitter" required />
+            </div>
+
+            <button type="submit" onclick="mEdtSocial()" class="btn">Simpan</button>
+          </div>
+        </section>
+        <article class="row" id="postnext"></article>
       </div>
+
+      <div id="addpost">
+        <section class="mcard mb20">
+          <h1 class="x-nowarp">Tambah Posting</h1>
+          <hr />
+          <div>
+            <p class="mlabel">Judul</p>
+            <div class="input-container">
+              <i class="fa fa-file-text icon"></i>
+              <input class="input-field" type="text" id="post_title" placeholder="Judul" name="title" onkeyup="mOutput()" required />
+              <input type="hidden" id="ouput" required readonly>
+            </div>
+
+            <p class="mlabel">Deskripsi</p>
+            <div class="input-container">
+              <i class="fa fa-file-text icon"></i>
+              <textarea class="input-field" rows="8" id="post_desc" placeholder="Tulis sesuatu..." name="subject" required></textarea>
+            </div>
+
+            <p class="mlabel">Unggah Poto</p>
+            <div class="input-container">
+              <i class="fa fa-picture-o icon"></i>
+              <input class="input-field" type="file" name="files[]" id="files_pt" accept="image/*" required />
+            </div>
+            <input type="hidden" name="url_pt" id="url_pt" />
+
+
+            <p class="mlabel">Tanggal</p>
+            <div class="input-container">
+              <i class="fa fa-calendar icon"></i>
+              <input class="input-field" type="date" id="post_date" name="date" required />
+            </div>
+
+            <button type="submit" onclick="mAddPost()" class="btn">Simpan</button>
+          </div>
+        </section>
+      </div>
+      
       <footer class="mcard mb20">
         <p class="lolicon">
           <a title="Facebook" href=""><i class="fa fa-facebook-square" aria-hidden="true"></i></a>
@@ -108,6 +184,9 @@
         <p class="footer"><b>Hak Cipta</b> <b id="cpr"></b> - <a href="">RW 08 UKS</a>.</p>
       </footer>
     </main>
+    <script type="text/javascript" src="../assets/js/storage/index.js"></script>
+    <script type="text/javascript" src="../assets/js/configs/index.js"></script>
+    <script type="text/javascript" src="../assets/js/profile/index.js"></script>
     <script type="text/javascript" src="../assets/js/copyright/index.js"></script>
   </body>
 </html>
