@@ -326,6 +326,10 @@ main {
     display: none;
 }
 
+.fsdesc {
+    font-size: x-large;
+}
+
 footer {
     text-align: center;
 }
@@ -353,5 +357,8 @@ footer {
         width: 56px;
         height: 56px;
         margin-right: 4px;
+    }
+    .fsdesc {
+        font-size: unset;
     }
 }
